@@ -1,0 +1,70 @@
+import snowflake.connector
+conn = snowflake.connector.connect(
+    user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
+    password='P0tZqjlT9Wd0WLwEo1Sd',
+    account='fg67397.eu-west-1',
+    warehouse='DF_RWD_DEV_WH_PRJ_MDC',
+    database='DF_RWD_DEV',
+    schema='PRJ_MDC_PSA'
+)
+
+
+cur = conn.cursor()
+
+
+insert_sql = """
+INSERT INTO "DF_RWD_DEV"."PRJ_MDC_DWH"."DWH_CLINIC_MASTER"
+  (
+	CLINIC_ID,
+	CITY,
+	STATE,
+	COUNTRY,
+	ZIP_CODE,
+	STATUS,
+	CREATED_DATE,
+	MODIFIED_DATE,
+	REGION,
+	CLINIC_CD,
+	SOURCE
+)
+
+SELECT 
+	CLINIC_ID,
+	INITCAP(CITY) AS CITY,
+	INITCAP(STATE) AS STATE,
+	INITCAP(COUNTRY) AS COUNTRY,
+	ZIP_CODE, 
+	STATUS, 
+	CREATED_DATE,
+	MODIFIED_DATE,
+    INITCAP(STATE)||' | '||INITCAP(CITY) AS REGION,
+    CLINIC_ID|| ' | ' ||ZIP_CODE AS CLINIC_CD,
+    SOURCE
+FROM "DF_RWD_DEV"."RWD_MDC_FR_STD_PSA"."CLINIC"
+
+UNION ALL
+
+SELECT 
+	CLINIC_ID,
+	INITCAP(CITY) AS CITY,
+	INITCAP(STATE) AS STATE,
+	INITCAP(COUNTRY) AS COUNTRY,
+	ZIP_CODE, 
+	STATUS, 
+	CREATED_DATE,
+	MODIFIED_DATE,
+    INITCAP(STATE)||' | '||INITCAP(CITY) AS REGION,
+    CLINIC_ID|| ' | ' ||ZIP_CODE AS CLINIC_CD,
+    SOURCE
+FROM DF_RWD_DEV.RWD_MDC_US_STD_PSA.CLINIC"""
+      
+cur.execute(insert_sql)
+
+
+conn.commit()
+
+
+cur.close()
+conn.close()
+
+
