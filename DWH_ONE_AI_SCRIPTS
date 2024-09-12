@@ -847,7 +847,7 @@ insert_sql = """INSERT INTO "DF_RWD_DEV"."PRJ_MDC_DWH"."DWH_USERACTIVITY"
 (PERSON_ID,
 ACTIVITY_ID,
 DATE,
-USER_ID
+USER_ID,
 CATEGORY,
 TIMESPENT,
 UDI,
@@ -1199,7 +1199,7 @@ FROM
      AND E.SOURCE  LIKE '%_DOSEPLAN%')"""
 
 
- cur.execute(insert_sql)
+cur.execute(insert_sql)
 
 
 conn.commit()
