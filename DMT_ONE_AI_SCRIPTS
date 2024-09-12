@@ -360,7 +360,7 @@ insert_sql = """INSERT INTO "DF_RWD_DEV"."PRJ_MDC_DMT"."DMT_DATE" (
 WITH RECURSIVE dates AS (
     SELECT DATE('2018-08-01') AS date_id
     UNION ALL
-    SELECT DATEADD(day, 1, date_id) FROM dates WHERE date_id < '2024-07-31'
+    SELECT DATEADD(day, 1, date_id) FROM dates WHERE date_id < '2024-08-31'
 )
 SELECT
     date_id,
@@ -951,7 +951,7 @@ cur.execute(delete_sql)
 insert_sql = """INSERT INTO "DF_RWD_DEV"."PRJ_MDC_DMT"."DMT_PRODUCT_MASTER"
 (
 PRODUCT,
-PRODUCT_NAME,
+PRODUCT_NAME
 )
 (SELECT DISTINCT 
 CASE
