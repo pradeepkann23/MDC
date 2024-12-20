@@ -58,7 +58,7 @@ conn.close()
 
 #DMT_PATIENT_MASTER#
  
- import snowflake.connector
+import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
     password='fo6AKi45VLq8kxxjyruKYq0',
@@ -968,7 +968,7 @@ CASE
     ELSE LTRIM(RTRIM(E.DRUG_NAME)) END AS PRODUCT,
     DRUG_NAME AS PRODUCT_NAME FROM "DF_RWD_DEV"."PRJ_MDC_DWH"."DWH_ENGAGEMENT" E)"""
     
- cur.execute(insert_sql)
+cur.execute(insert_sql)
 
 
 conn.commit()
