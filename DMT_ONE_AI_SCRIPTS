@@ -358,12 +358,9 @@ insert_sql = """INSERT INTO "DF_RWD_DEV"."PRJ_MDC_DMT"."DMT_DATE" (
 )
   
 WITH RECURSIVE dates AS (
-    SELECT DATE('2018-08-01') AS date_id
+    SELECT DATE('2018-07-01') AS date_id
     UNION ALL
-    SELECT DATEADD(day, 1, date_id) FROM dates WHERE date_id < (
-    SELECT MAX(LASTLOGIN)
-    FROM "DF_RWD_DEV"."PRJ_MDC_DMT"."DMT_PATIENT_MASTER"
-)
+    SELECT DATEADD(day, 1, date_id) FROM dates WHERE date_id < '2025-01-31'
 )
 SELECT
     date_id,
