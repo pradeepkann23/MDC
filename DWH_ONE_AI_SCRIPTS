@@ -3,7 +3,7 @@
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -63,7 +63,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -265,7 +265,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -364,7 +364,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -495,7 +495,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -719,7 +719,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -996,7 +996,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -1101,7 +1101,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -1237,7 +1237,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
@@ -1381,6 +1381,91 @@ conn.commit()
 cur.close()
 conn.close()  
 
+#DWH_DEVICE#
+
+import snowflake.connector
+conn = snowflake.connector.connect(
+    user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
+    password='EuWWA3thOoMvXPT21lgyRVc',
+    account='fg67397.eu-west-1',
+    warehouse='DF_RWD_DEV_WH_PRJ_MDC',
+    database='DF_RWD_DEV',
+    schema='PRJ_MDC_DWH'
+)
+
+
+cur = conn.cursor()
+
+delete_sql = """
+DELETE FROM DWH_DEVICE
+"""
+
+
+cur.execute(delete_sql)
+
+insert_sql = """INSERT INTO "DF_RWD_DEV"."PRJ_MDC_DWH"."DWH_DEVICE"
+(SELECT 
+D.PERSON_ID,
+D.ENGAGEMENT_ID,
+D.DEVICE_ID,
+D.DEVICE_NAME,
+D.DEVICE_TYPE,
+P.BIRTHDATE,
+D.ACTIVATED_DATE,
+D.DEACTIVATED_DATE,
+D.SOURCE
+FROM 
+    "DF_RWD_DEV"."RWD_MDC_SA_STD_PSA"."DEVICE" D
+JOIN 
+    "DF_RWD_DEV"."RWD_MDC_SA_STD_PSA"."PERSON" P
+    ON D.PERSON_ID = P.PERSON_ID WHERE D.SOURCE LIKE '%DEVICEREAD%
+
+    UNION ALL
+
+SELECT 
+D.PERSON_ID,
+D.ENGAGEMENT_ID,
+D.DEVICE_ID,
+D.DEVICE_NAME,
+D.DEVICE_TYPE,
+P.BIRTHDATE,
+D.ACTIVATED_DATE,
+D.DEACTIVATED_DATE,
+D.SOURCE
+FROM 
+    "DF_RWD_DEV"."RWD_MDC_US_STD_PSA"."DEVICE" D
+JOIN 
+    "DF_RWD_DEV"."RWD_MDC_US_STD_PSA"."PERSON" P
+    ON D.PERSON_ID = P.PERSON_ID
+
+    UNION ALL
+
+
+SELECT 
+D.PERSON_ID,
+D.ENGAGEMENT_ID,
+D.DEVICE_ID,
+D.DEVICE_NAME,
+D.DEVICE_TYPE,
+P.BIRTHDATE,
+D.ACTIVATED_DATE,
+D.DEACTIVATED_DATE,
+D.SOURCE
+FROM 
+    "DF_RWD_DEV"."RWD_MDC_FR_STD_PSA"."DEVICE" D
+JOIN 
+    "DF_RWD_DEV"."RWD_MDC_FR_STD_PSA"."PERSON" P
+    ON D.PERSON_ID = P.PERSON_ID
+	)"""
+
+cur.execute(insert_sql)
+
+
+conn.commit()
+
+
+cur.close()
+conn.close()  
 
 
 #DWH_DOSEPLANTEMPLATE#
@@ -1388,7 +1473,7 @@ conn.close()
 import snowflake.connector
 conn = snowflake.connector.connect(
     user='DF_RWD_DEV_PRJ_MDC_IICS_DEVELOPER',
-    password='fo6AKi45VLq8kxxjyruKYq0',
+    password='EuWWA3thOoMvXPT21lgyRVc',
     account='fg67397.eu-west-1',
     warehouse='DF_RWD_DEV_WH_PRJ_MDC',
     database='DF_RWD_DEV',
