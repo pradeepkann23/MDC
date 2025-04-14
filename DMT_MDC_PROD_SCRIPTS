@@ -927,11 +927,14 @@ ORDER BY OBSERVATION_DATE ) A ) B"""
 
 cur.execute(insert_sql)
 
-delete_sql="""DELETE FROM "DF_RWD_PROD"."PRJ_MDC_DMT"."DMT_PATIENT_ANALYSIS" WHERE PERSON_ID IS NULL AND CLINIC_ID IS NULL AND DOSE_SUGGESSTION IS NULL AND DOSE IS NULL AND FBGL IS NULL AND HYPO IS NULL"""
+delete_sql="""DELETE FROM "DF_RWD_PROD"."PRJ_MDC_DMT"."DMT_PATIENT_ANALYSIS" WHERE PERSON_ID IS NULL AND CLINIC_ID IS NULL"""
 
  
 cur.execute(delete_sql)
 
+delete_sql="""DELETE FROM "DF_RWD_PROD"."PRJ_MDC_DMT"."DMT_PATIENT_ANALYSIS" WHERE DOSE_SUGGESTION IS NULL AND  DOSE  IS NULL AND  FBGL IS  NULL AND  HYPO  IS NULL"""
+
+cur.execute(delete_sql)
 
 conn.commit()
 
@@ -1146,6 +1149,118 @@ CHANGE_METHOD7,
 STATUS,
 SOURCE FROM DF_RWD_PROD.PRJ_MDC_DWH.DWH_DOSEPLANTEMPLATE)"""
 
+cur.execute(insert_sql)
+
+
+conn.commit()
+
+
+cur.close()
+conn.close()
+
+#DMT_DEVICE_READINGS#
+
+import snowflake.connector
+conn = snowflake.connector.connect(
+    user='DF_RWD_PROD_PRJ_MDC_IICS_DEVELOPER',
+    password='rbNVfUEz3gD9e6cJahvL4C',
+    account='fg67397.eu-west-1',
+    warehouse='DF_RWD_PROD_WH_PRJ_MDC',
+    database='DF_RWD_PROD',
+    schema='PRJ_MDC_DMT'
+)
+
+
+cur = conn.cursor()
+
+delete_sql = """
+DELETE FROM DMT_DEVICE_READINGS
+"""
+
+
+cur.execute(delete_sql)
+
+insert_sql = """INSERT INTO "DF_RWD_PROD"."PRJ_MDC_DMT"."DMT_DEVICE_READINGS"
+(PATIENT_ID,
+    OBSERVATION_ID,
+    CAREPLAN_ID,
+    RECORDED_DATE,
+    VALUE,
+    VALUE_UNIT,
+    FASTING,
+    HYPO,
+    SUGGESTED_DOSE,
+    SUGGESTED_REASON,
+    STATUS,
+    SOURCE)
+   
+    (SELECT
+    PATIENT_ID,
+    OBSERVATION_ID,
+    CAREPLAN_ID,
+	TO_DATE(RECORDED_DATE),
+    VALUE,
+    VALUE_UNIT,
+    FASTING,
+    HYPO,
+    SUGGESTED_DOSE,
+    SUGGESTED_REASON,
+    STATUS,
+    SOURCE FROM DF_RWD_PROD.PRJ_MDC_DWH.DWH_DEVICE_READINGS)"""
+    
+cur.execute(insert_sql)
+
+
+conn.commit()
+
+
+cur.close()
+conn.close()
+
+#DMT_DEVICE#
+
+import snowflake.connector
+conn = snowflake.connector.connect(
+    user='DF_RWD_PROD_PRJ_MDC_IICS_DEVELOPER',
+    password='rbNVfUEz3gD9e6cJahvL4C',
+    account='fg67397.eu-west-1',
+    warehouse='DF_RWD_PROD_WH_PRJ_MDC',
+    database='DF_RWD_PROD',
+    schema='PRJ_MDC_DMT'
+)
+
+
+cur = conn.cursor()
+
+delete_sql = """
+DELETE FROM DMT_DEVICE
+"""
+
+
+cur.execute(delete_sql)
+
+insert_sql = """INSERT INTO "DF_RWD_PROD"."PRJ_MDC_DMT"."DMT_DEVICE"
+(	PERSON_ID,
+    ENGAGEMENT_ID,
+    DEVICE_ID,
+    DEVICE_NAME,
+    DEVICE_TYPE,
+    BIRTHDATE,
+    ACTIVATED_DATE,
+    DEACTIVATED_DATE,
+    SOURCE)
+   
+    (SELECT
+    PERSON_ID,
+    ENGAGEMENT_ID,
+    DEVICE_ID,
+	DEVICE_NAME,
+    DEVICE_TYPE,
+    BIRTHDATE,
+    TO_DATE(ACTIVATED_DATE),
+    TO_DATE(DEACTIVATED_DATE),
+    SOURCE FROM DF_RWD_PROD.PRJ_MDC_DWH.DWH_DEVICE)"""
+    
 cur.execute(insert_sql)
 
 
